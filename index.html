@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.0/css/bulma.min.css">
+  <title>Guardar </title>
+</head>
+<body>
+  
+  <div id="app">
+    <div class="container">
+      <div class="section">
+        <h2 class="title has-text-centered">{{title}}</h2>
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <div class="field">
+              <label class="label">Nombre</label>
+              <p class="control is-expanded">
+                <input class="input" type="text" placeholder="Nombre" v-model="form.nombre">
+              </p>
+            </div>
+
+            <div class="field">
+              <label class="label">Apellido</label>
+              <div class="control is-expanded">
+                <input type="text" class="input" v-model="form.apellido" placeholder="Apellido">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select v-model="form.selected">
+                    <option disabled value="">Seleccione una opción</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <p class="control">
+                <a class="button is-info" @click="refreshPage()">
+                  Refresh
+                </a>
+              </p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <pre>{{$data}}</pre>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      mounted() {
+        if (localStorage.getItem('form')) {
+          this.form = JSON.parse(localStorage.getItem('form'));
+        }
+      },
+      data: {
+        title: 'Conservar datos con localStorage',
+        form: {
+          nombre: '',
+          apellido: '',
+          selected: ''
+        }
+      },
+      watch: {
+        form: {
+          handler(nuevo) { 
+            console.log(nuevo.nombre);
+            localStorage.setItem('form', JSON.stringify(nuevo));
+          },
+          deep: true
+        }
+      },
+      methods: {
+        refreshPage() {
+          location.reload();
+        }
+      }
+    });
+
+    // vm.$watch('form', (nuevo, viejo) => {
+    //   console.log(viejo.nombre);
+    //   console.log(nuevo.nombre);
+    // }, { deep: true })
+  </script> 
+</body>
+</html>
